@@ -1,12 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マルチカウンター</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+h1{
+    text-align: center;
+}
+
+.add-area{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    padding:8px;
+    flex:1;
+}
+
+button{
+    padding:8px 15px;
+    cursor:pointer;
+}
+
+.counter{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:1px solid #ddd;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:8px;
+}
+
+.counter-name{
+    flex:1;
+    font-weight:bold;
+}
+
+.count{
+    min-width:50px;
+    text-align:center;
+    font-size:20px;
+}
+</style>
 </head>
 <body>
-    
+
+<h1>カウンター管理</h1>
+
+<div class="add-area">
+    <input type="text" id="counterName" placeholder="カウンター名を入力">
+    <button onclick="addCounter()">追加</button>
+</div>
+
+<div id="counterList"></div>
+
+<script>
+function addCounter() {
+    const nameInput = document.getElementById("counterName");
+    const name = nameInput.value.trim();
+
+    if (!name) {
+        alert("名前を入力してください");
+        return;
+    }
+
+    const counterDiv = document.createElement("div");
+    counterDiv.className = "counter";
+
+    counterDiv.innerHTML = `
+        <div class="counter-name">${name}</div>
+        <button onclick="changeCount(this,-1)">－</button>
+        <div class="count">0</div>
+        <button onclick="changeCount(this,1)">＋</button>
+        <button onclick="this.parentElement.remove()">削除</button>
+    `;
+
+    document.getElementById("counterList").appendChild(counterDiv);
+    nameInput.value = "";
+}
+
+function changeCount(btn, diff){
+    const countElement = btn.parentElement.querySelector(".count");
+    let count = parseInt(countElement.textContent);
+    count += diff;
+    countElement.textContent = count;
+}
+</script>
+
 </body>
 </html>
